@@ -1,0 +1,6 @@
+<% if @envs.empty? %>
+There are no environments available for <%= @repo %>
+Tell me something like "you can deploy <%= @repo %> to production"
+<% else %>
+You can deploy <%= @repo %> to <%= @envs.to_sentence %>
+<% end %>

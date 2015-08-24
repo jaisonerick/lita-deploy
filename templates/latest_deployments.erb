@@ -1,0 +1,5 @@
+Recent Deployments for <%= @repo %>
+-----------------------------------
+<% @deployments[0..10].each do |deployment| %>
+  <%= deployment[:time_ago] %> ago by <%= deployment[:login] %>: <%= deployment[:ref] %> to <%= deployment[:environment] %>
+<% end %>
