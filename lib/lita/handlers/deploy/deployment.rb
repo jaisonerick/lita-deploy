@@ -141,7 +141,7 @@ module Lita
           fail "I don\'t know you key to access Github.\n" \
                "You can tell me with 'my deploy token is ABC'\n" \
                "To create a new one, go to https://github.com/settings/tokens" \
-               if user.metadata['github_key'].empty?
+               if !user.metadata.key?('github_key') || user.metadata['github_key'].empty?
 
           user.metadata['github_key']
         end
