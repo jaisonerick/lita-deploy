@@ -78,7 +78,7 @@ module Lita
           client.create_deployment(repo, branch,
                                    environment: environment,
                                    required_contexts: required_contexts,
-                                   payload: JSON.dump(payload))
+                                   payload: payload)
           return "Deployment of #{repo} to #{environment} created"
         rescue => e
           body_message = e.message
