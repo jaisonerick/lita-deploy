@@ -88,6 +88,11 @@ module Lita
                    "the latest \"#{branch}\" branch."
           end
 
+          if /Commit status checks failed for/.match(body_message)
+            return "There's a problem with the #{branch} branch. Check " \
+                   'circleci for more information.'
+          end
+
           if /Conflict merging ([-_\.0-9a-z]+)/.match(body_message)
             default_branch = /Conflict merging ([-_\.0-9a-z]+)/
                              .match(body_message)[1]
