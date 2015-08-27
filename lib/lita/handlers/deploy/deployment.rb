@@ -12,7 +12,7 @@ module Lita
         attr_reader :user, :environment
 
         def initialize(user, branch_config, environment = nil)
-          branch_config += ':' unless /:/.match(branch_config)
+          branch_config += ':master' unless /:/.match(branch_config)
           @user = user
           @branch_config = branch_config
           @environment = environment
