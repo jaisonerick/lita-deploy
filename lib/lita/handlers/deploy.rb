@@ -1,4 +1,5 @@
 require 'lita/handlers/deploy/deployment'
+require 'lita/handlers/deploy/queue'
 
 module Lita
   # Lita Handlers
@@ -84,6 +85,13 @@ module Lita
       end
 
       def deploy(response)
+        queue_user = queue.current
+        user = response.user.mention_name
+
+        return response.reply "@#{queue_user} is working on a deploy right " \
+                              'now. Tell me, do you want me to queue you? ' \
+                              '(like this: pb queue me)' if user != queue_user
+
         branch = response.match_data[1]
         environment = response.match_data[2] || config.default_env
 
@@ -92,10 +100,12 @@ module Lita
 
         deployment_response = deployment.post
         response.reply deployment_response if deployment_response
+      end
 
-        # msg = 'tmm1 is deploying github/my-feature (sha1) to production.'
-        # msg = 'tmm1\'s production deployment of github/my-feature (sha1) is done! (82s)'
-        # msg = 'tmm1, make sure you watch for exceptions in rollbar and perf issues at graphme'
+      private
+
+      def queue
+        @queue ||= Deploy::Queue.new
       end
     end
 
