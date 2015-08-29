@@ -2,4 +2,5 @@ source "https://rubygems.org"
 
 gemspec
 
-gem 'yard'
+gem 'yard', group: :development
+gem 'webmock', group: :test

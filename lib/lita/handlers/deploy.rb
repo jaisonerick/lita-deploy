@@ -90,7 +90,7 @@ module Lita
 
         return response.reply "@#{queue_user} is working on a deploy right " \
                               'now. Tell me, do you want me to queue you? ' \
-                              '(like this: pb queue me)' if user != queue_user
+                              '(like this: pb queue me)' if user != queue_user && queue_user
 
         branch = response.match_data[1]
         environment = response.match_data[2] || config.default_env
