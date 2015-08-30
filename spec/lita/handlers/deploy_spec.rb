@@ -28,18 +28,65 @@ describe Lita::Handlers::Deploy, lita_handler: true do
   it { is_expected.to route('forget about my deploy token').to(:forget_token) }
   it { is_expected.to route('forget about my deploy key').to(:forget_token) }
 
-  it 'deploy repo to production' do
-    stub_deployment_creation(repo: 'repo',
-                             env: 'production',
-                             full_repo: "#{github_company}/repo",
-                             room: room,
-                             user_id: user.id,
-                             branch: 'master',
-                             token: user_token)
+  context 'successfully deploy' do
+    it 'deploy repo to production' do
+      stub_deployment_creation(repo: 'repo',
+                               env: 'production',
+                               full_repo: "#{github_company}/repo",
+                               room: room,
+                               user_id: user.id,
+                               branch: 'master',
+                               token: user_token)
 
-    send_message('deploy repo to production', as: user)
+      send_message('deploy repo to production', as: user)
 
-    expect(replies.last)
-      .to eq('Deployment of company/repo to production created')
+      expect(replies.last)
+        .to eq('Deployment of company/repo to production created')
+    end
+
+    it 'deploy organization/repo to production' do
+      stub_deployment_creation(repo: 'repo',
+                               env: 'production',
+                               full_repo: 'organization/repo',
+                               room: room,
+                               user_id: user.id,
+                               branch: 'master',
+                               token: user_token)
+
+      send_message('deploy organization/repo to production', as: user)
+
+      expect(replies.last)
+        .to eq('Deployment of organization/repo to production created')
+    end
+
+    it 'deploy organization/repo to development' do
+      stub_deployment_creation(repo: 'repo',
+                               env: 'development',
+                               full_repo: 'organization/repo',
+                               room: room,
+                               user_id: user.id,
+                               branch: 'master',
+                               token: user_token)
+
+      send_message('deploy organization/repo to development', as: user)
+
+      expect(replies.last)
+        .to eq('Deployment of organization/repo to development created')
+    end
+
+    it 'deploy organization/repo:develop to development' do
+      stub_deployment_creation(repo: 'repo',
+                               env: 'development',
+                               full_repo: 'organization/repo',
+                               room: room,
+                               user_id: user.id,
+                               branch: 'develop',
+                               token: user_token)
+
+      send_message('deploy organization/repo:develop to development', as: user)
+
+      expect(replies.last)
+        .to eq('Deployment of organization/repo to development created')
+    end
   end
 end
