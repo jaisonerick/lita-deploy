@@ -7,10 +7,14 @@ module Lita
     class DeployQueue < Handler
       config :channel_name, required: true
 
-      route(/^queue me$/, :queue_me, command: :true)
-      route(/^unqueue me$/, :unqueue_me, command: :true)
-      route(/^queue next$/, :queue_next, command: :true)
-      route(/^queue$/, :queue_list, command: :true)
+      route(/^queue me$/, :queue_me, command: :true, help:
+            { 'pb queue me' => 'Adds yourself into the queue for deploy.' })
+      route(/^unqueue me$/, :unqueue_me, command: :true, help:
+            { 'pb unqueue me' => 'Removes yourself from the deployment queue' })
+      route(/^queue next$/, :queue_next, command: :true, help:
+            { 'pb queue next' => 'Releases the queue and call next.' })
+      route(/^queue$/, :queue_list, command: :true, help:
+            { 'pb queue' => 'Displays who is queued' })
 
       def queue_me(response)
         pos = queue.push(response.user.mention_name)
